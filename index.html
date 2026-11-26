@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#b91c1c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>أرقام الطوارئ - مصر</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#fafaf9;color:#1c1917;padding:12px 12px 40px;max-width:640px;margin-inline:auto}
+h1{font-size:20px;margin:6px 0 12px;text-align:center}
+h2{font-size:15px;margin:22px 4px 8px;color:#57534e}
+.main{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.main a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:96px;border-radius:16px;background:#b91c1c;color:#fff;text-decoration:none;font-weight:700;font-size:16px}
+.main a b{font-size:34px;line-height:1}
+.main a.wide{grid-column:1/-1;background:#7f1d1d}
+.sos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.sos button{border:0;border-radius:16px;min-height:84px;font:700 18px inherit;font-family:inherit;color:#fff;cursor:pointer}
+#ok{background:#15803d}#help{background:#c2410c}
+.sos button:active,.main a:active{opacity:.8}
+#msg{min-height:20px;font-size:13px;color:#57534e;text-align:center;margin:8px 0}
+.list a{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#fff;border:1px solid #e7e5e4;border-radius:12px;margin-bottom:6px;text-decoration:none;color:inherit}
+.list a span:last-child{font-weight:700;direction:ltr;color:#b91c1c}
+.set{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:12px;font-size:14px}
+.set input{width:100%;padding:10px;border:1px solid #d6d3d1;border-radius:8px;font-size:16px;direction:ltr;margin-top:6px}
+small{color:#78716c}
+</style>
+</head>
+<body>
+<h1>🚨 أرقام الطوارئ - مصر</h1>
+
+<div class="main">
+ <a href="tel:122"><b>122</b>الشرطة / النجدة</a>
+ <a href="tel:123"><b>123</b>الإسعاف</a>
+ <a href="tel:180"><b>180</b>المطافئ</a>
+ <a href="tel:128"><b>128</b>شرطة المرور</a>
+ <a class="wide" href="tel:01221110000"><b>01221110000</b>نجدة الطرق السريعة</a>
+</div>
+
+<div class="sos">
+ <button id="ok" type="button">✅ أنا بخير</button>
+ <button id="help" type="button">🆘 محتاج مساعدة</button>
+</div>
+<div id="msg"></div>
+
+<h2>أرقام تانية</h2>
+<div class="list">
+ <a href="tel:126"><span>شرطة السياحة</span><span>126</span></a>
+ <a href="tel:121"><span>طوارئ الكهرباء</span><span>121</span></a>
+ <a href="tel:129"><span>طوارئ الغاز الطبيعي</span><span>129</span></a>
+ <a href="tel:125"><span>مياه الشرب</span><span>125</span></a>
+ <a href="tel:105"><span>طوارئ الصحة</span><span>105</span></a>
+ <a href="tel:112"><span>الطوارئ (112)</span><span>112</span></a>
+ <a href="tel:16000"><span>نجدة الطفل</span><span>16000</span></a>
+ <a href="tel:1560"><span>لجنة المرأة</span><span>1560</span></a>
+ <a href="tel:16023"><span>مكافحة وعلاج الإدمان</span><span>16023</span></a>
+ <a href="tel:25753555"><span>معلومات السكك الحديدية</span><span>25753555</span></a>
+</div>
+
+<h2>رقم واحد تبعت له مباشرة (اختياري)</h2>
+<div class="set">
+ لو كتبت رقم حد من أهلك، الرسالة هتتبعت له على طول من غير ما تختار.
+ <input id="num" type="tel" inputmode="tel" placeholder="مثال: 201001234567" autocomplete="off">
+ <small>بالكود الدولي من غير + ولا أصفار. بيتحفظ على موبايلك بس.</small>
+</div>
+
+<script>
+const $=id=>document.getElementById(id), msg=$('msg'), num=$('num');
+num.value=localStorage.getItem('num')||'';
+num.addEventListener('input',()=>localStorage.setItem('num',num.value.replace(/\D/g,'')));
+function send(text){
+  const n=(localStorage.getItem('num')||'').replace(/\D/g,'');
+  location.href=(n?'https://wa.me/'+n:'https://wa.me/')+'?text='+encodeURIComponent(text);
+}
+function go(kind){
+  const base=kind==='ok'?'أنا بخير ✅':'🆘 محتاج مساعدة!';
+  msg.textContent='بحدد مكانك...';
+  if(!navigator.geolocation){send(base+'\n(مش قادر أحدد الموقع)');return}
+  navigator.geolocation.getCurrentPosition(p=>{
+    const l=p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);
+    send(base+'\nمكاني: https://maps.google.com/?q='+l);
+  },()=>{
+    msg.textContent='مقدرتش أحدد الموقع، هبعت الرسالة من غيره.';
+    send(base+'\n(الموقع مش متاح، فعّل الـ GPS)');
+  },{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
+}
+$('ok').onclick=()=>go('ok');
+$('help').onclick=()=>go('help');
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
