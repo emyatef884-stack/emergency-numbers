@@ -76,7 +76,7 @@ function send(text){
   location.href=(n?'https://wa.me/'+n:'https://wa.me/')+'?text='+encodeURIComponent(text);
 }
 function go(kind){
-  const base=kind==='ok'?'أنا بخير ✅':'🆘 محتاج مساعدة!';
+  const base=kind==='ok'?'أنا بخير ✅':'🆘 محتاجة مساعدة!';
   msg.textContent='بحدد مكانك...';
   if(!navigator.geolocation){send(base+'\n(مش قادر أحدد الموقع)');return}
   navigator.geolocation.getCurrentPosition(p=>{
