@@ -42,7 +42,7 @@ small{color:#78716c}
 
 <div class="sos">
  <button id="ok" type="button">✅ أنا بخير</button>
- <button id="help" type="button">🆘 محتاج مساعدة</button>
+ <button id="help" type="button">🆘 محتاجة مساعدة</button>
 </div>
 <div id="msg"></div>
 
@@ -60,9 +60,9 @@ small{color:#78716c}
  <a href="tel:25753555"><span>معلومات السكك الحديدية</span><span>25753555</span></a>
 </div>
 
-<h2>رقم واحد تبعت له مباشرة (اختياري)</h2>
+<h2>رقم واحد تجهزي له الرسالة (اختياري)</h2>
 <div class="set">
- لو كتبت رقم حد من أهلك، الرسالة هتتبعت له على طول من غير ما تختار.
+ لو كتبت رقم حد من أهلك، الزرارين فوق بيفتحوا شات واتساب بالرسالة جاهزة، وانتي اللي بتدوسي إرسال. الرسالة مش بتتبعت لوحدها، ولازم يكون في نت على الموبايل. ممكن المكان مايظهرش لو الـ GPS مقفول أو الإذن مرفوض. في الطوارئ الحقيقية، اتصلي على طول بالنجدة 122 أو الإسعاف 123 أو المطافئ 180.
  <input id="num" type="tel" inputmode="tel" placeholder="مثال: 201001234567" autocomplete="off">
  <small>بالكود الدولي من غير + ولا أصفار. بيتحفظ على موبايلك بس.</small>
 </div>
@@ -83,7 +83,7 @@ function go(kind){
     const l=p.coords.latitude.toFixed(6)+','+p.coords.longitude.toFixed(6);
     send(base+'\nمكاني: https://maps.google.com/?q='+l);
   },()=>{
-    msg.textContent='مقدرتش أحدد الموقع، هبعت الرسالة من غيره.';
+    msg.textContent='مقدرتش أحدد الموقع، هجهزلك الرسالة من غيره.';
     send(base+'\n(الموقع مش متاح، فعّل الـ GPS)');
   },{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
 }
